@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Register</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 40px; width: 100%; max-width: 400px; }
+        h2 { color: #818cf8; margin-bottom: 8px; font-size: 24px; }
+        p { color: #666; font-size: 13px; margin-bottom: 25px; }
+        input { width: 100%; padding: 12px 15px; margin-bottom: 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 14px; }
+        input:focus { outline: none; border-color: #6366f1; }
+        button { width: 100%; padding: 13px; background: #6366f1; color: white; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #4f46e5; }
+        .bottom { text-align: center; margin-top: 20px; font-size: 13px; color: #666; }
+        .bottom a { color: #818cf8; text-decoration: none; }
+        .error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+        .info { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); color: #818cf8; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>👩‍🏫 Teacher Register</h2>
+
+        {% if error %}<div class="error">{{ error }}</div>{% endif %}
+
+        {% if step == 1 %}
+        <p>Create your account to get started</p>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="text" name="college" placeholder="College Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" name="send_otp" value="1">Send OTP & Register</button>
+        </form>
+
+        {% elif step == 2 %}
+        <div class="info">✉️ OTP sent to your email! Check inbox.</div>
+        <p>Enter the OTP to verify your email</p>
+        <form method="POST">
+            <input type="text" name="otp" placeholder="Enter 6-digit OTP" maxlength="6" required>
+            <button type="submit" name="verify_otp" value="1">Verify & Create Account</button>
+        </form>
+        {% endif %}
+
+        <div class="bottom">Already have account? <a href="/teacher/login">Login here</a></div>
+    </div>
+</body>
+</html>

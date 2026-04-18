@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Classes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #818cf8; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; }
+        .add-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 25px; max-width: 450px; margin-bottom: 30px; }
+        .add-box h3 { color: #818cf8; margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px 15px; margin-bottom: 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 14px; }
+        input:focus, select:focus { outline: none; border-color: #6366f1; }
+        select option { background: #1a1a2e; }
+        button { width: 100%; padding: 13px; background: #6366f1; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; }
+        button:hover { background: #4f46e5; }
+        .msg { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+        .subjects-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 25px; max-width: 450px; }
+        .subjects-box h3 { color: #818cf8; margin-bottom: 20px; }
+        .subject-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #2a2a4a; }
+        .subject-item:last-child { border-bottom: none; }
+        .subject-name { font-weight: 600; font-size: 15px; }
+        .subject-time { font-size: 12px; color: #666; margin-top: 3px; }
+        .btn-delete { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); padding: 6px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; text-decoration: none; }
+        .empty { color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/teacher/dashboard">← Back</a>
+        <div class="title">My Classes</div>
+        <div></div>
+    </div>
+    <div class="main">
+
+        <div class="add-box">
+            <h3>➕ Add New Subject</h3>
+            {% if message %}<div class="msg">{{ message }}</div>{% endif %}
+            <form method="POST">
+                <input type="text" name="subject_name" placeholder="Subject Name (e.g. Mathematics)" required>
+                <input type="time" name="time_slot" required>
+                <button type="submit">Add Subject</button>
+            </form>
+        </div>
+
+        <div class="subjects-box">
+            <h3>📚 My Subjects</h3>
+            {% if subjects %}
+                {% for s in subjects %}
+                <div class="subject-item">
+                    <div>
+                        <div class="subject-name">{{ s[2] }}</div>
+                        <div class="subject-time">⏰ {{ s[3] }}</div>
+                    </div>
+                    <a href="/teacher/delete_subject/{{ s[0] }}" class="btn-delete">Delete</a>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty">No subjects added yet</div>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>

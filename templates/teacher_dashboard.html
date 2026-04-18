@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+
+        /* Top navbar */
+        .navbar {
+            background: #1a1a2e;
+            border-bottom: 1px solid #2a2a4a;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .left { display: flex; align-items: center; gap: 15px; }
+        .navbar .avatar {
+            width: 42px; height: 42px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 700;
+        }
+        .navbar .name { font-weight: 600; font-size: 15px; }
+        .navbar .college { font-size: 12px; color: #666; }
+        .navbar .right { display: flex; align-items: center; gap: 15px; }
+        .code-box {
+            background: rgba(99,102,241,0.15);
+            border: 1px solid rgba(99,102,241,0.4);
+            color: #818cf8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .logout { color: #666; text-decoration: none; font-size: 13px; }
+        .logout:hover { color: #f87171; }
+
+        /* Main content */
+        .main { padding: 30px; }
+
+        .welcome { margin-bottom: 30px; }
+        .welcome h2 { font-size: 24px; margin-bottom: 5px; }
+        .welcome p { color: #666; font-size: 14px; }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 35px;
+        }
+        .stat {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4a;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat .num { font-size: 32px; font-weight: 800; color: #818cf8; }
+        .stat .label { font-size: 12px; color: #666; margin-top: 4px; }
+
+        /* Menu cards */
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .menu-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4a;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+        }
+        .menu-card:hover { transform: translateY(-5px); border-color: #6366f1; background: #1e1e3a; }
+        .menu-card .icon { font-size: 40px; margin-bottom: 15px; }
+        .menu-card h3 { font-size: 16px; color: #818cf8; margin-bottom: 6px; }
+        .menu-card p { font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="left">
+            <div class="avatar">{{ name[0] }}</div>
+            <div>
+                <div class="name">{{ name }}</div>
+                <div class="college">{{ college }}</div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="code-box">🔑 {{ code }}</div>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="welcome">
+            <h2>Welcome back, {{ name }}! 👋</h2>
+            <p>Here's what's happening today</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat"><div class="num">{{ total_students }}</div><div class="label">Total Students</div></div>
+            <div class="stat"><div class="num">{{ total_subjects }}</div><div class="label">Subjects</div></div>
+            <div class="stat"><div class="num">{{ pending }}</div><div class="label">Pending Requests</div></div>
+        </div>
+
+        <div class="menu">
+            <a href="/teacher/classes" class="menu-card">
+                <div class="icon">📚</div>
+                <h3>Classes</h3>
+                <p>Manage subjects and time slots</p>
+            </a>
+            <a href="/teacher/scanner" class="menu-card">
+                <div class="icon">📷</div>
+                <h3>QR Scanner</h3>
+                <p>Scan student QR for attendance</p>
+            </a>
+            <a href="/teacher/approvals" class="menu-card">
+                <div class="icon">✅</div>
+                <h3>Approvals</h3>
+                <p>Manage student requests</p>
+            </a>
+            <a href="/teacher/attendance" class="menu-card">
+                <div class="icon">📊</div>
+                <h3>Attendance</h3>
+                <p>View all attendance records</p>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

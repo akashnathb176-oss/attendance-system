@@ -1,0 +1,7 @@
+flask
+flask-mail
+qrcode[pil]
+opencv-python-headless
+pyzbar
+Pillow
+gunicorn

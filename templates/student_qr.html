@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My QR Code</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #34d399; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; display: flex; justify-content: center; }
+        .box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 40px; text-align: center; max-width: 380px; width: 100%; }
+        .box h2 { color: #34d399; margin-bottom: 8px; }
+        .box p { color: #666; font-size: 13px; margin-bottom: 25px; }
+        .qr-img { width: 280px; height: 280px; border-radius: 12px; background: white; padding: 10px; }
+        .student-name { font-size: 18px; font-weight: 700; margin-top: 20px; }
+        .student-info { color: #666; font-size: 13px; margin-top: 5px; margin-bottom: 20px; }
+        .fullscreen-btn { display: block; padding: 14px; background: #10b981; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; text-decoration: none; }
+
+        /* Fullscreen overlay */
+        .fullscreen-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: white;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .fullscreen-overlay.active { display: flex; }
+        .fullscreen-overlay img { width: 90vw; height: 90vw; max-width: 500px; max-height: 500px; }
+        .fullscreen-overlay p { color: #333; font-size: 16px; font-weight: 700; margin-top: 20px; }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: #333; color: white; border: none; border-radius: 50%; width: 40px; height: 40px; font-size: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/student/dashboard">← Back</a>
+        <div class="title">My QR Code</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <div class="box">
+            <h2>📱 Your QR Code</h2>
+            <p>Tap fullscreen and show to webcam</p>
+            <img class="qr-img" src="/static/qrcodes/{{ student_id }}.png">
+            <div class="student-name">{{ name }}</div>
+            <div class="student-info">{{ college }}</div>
+            <button onclick="openFullscreen()" class="fullscreen-btn">⛶ Open Fullscreen</button>
+        </div>

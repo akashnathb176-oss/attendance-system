@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Approvals</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #818cf8; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; }
+        h2 { margin-bottom: 25px; font-size: 22px; }
+        .section-title { color: #666; font-size: 12px; letter-spacing: 2px; margin-bottom: 15px; margin-top: 30px; }
+        .student-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a4a;
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .student-info { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 44px; height: 44px; background: #6366f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+        .name { font-weight: 600; font-size: 15px; }
+        .college { font-size: 12px; color: #666; margin-top: 2px; }
+        .actions { display: flex; gap: 10px; }
+        .btn { padding: 8px 18px; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; text-decoration: none; }
+        .btn-accept { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .btn-accept:hover { background: rgba(16,185,129,0.4); }
+        .btn-reject { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .btn-reject:hover { background: rgba(239,68,68,0.4); }
+        .btn-remove { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .btn-remove:hover { background: rgba(239,68,68,0.4); }
+        .btn-add { background: rgba(99,102,241,0.2); color: #818cf8; border: 1px solid rgba(99,102,241,0.3); }
+        .btn-add:hover { background: rgba(99,102,241,0.4); }
+        .badge-rejected { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .empty { color: #666; font-size: 14px; padding: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/teacher/dashboard">← Back</a>
+        <div class="title">Student Approvals</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <h2>✅ Manage Students</h2>
+
+        <!-- Pending -->
+        <div class="section-title">PENDING REQUESTS</div>
+        {% if pending %}
+            {% for s in pending %}
+            <div class="student-card">
+                <div class="student-info">
+                    <div class="avatar">{{ s[1][0] }}</div>
+                    <div>
+                        <div class="name">{{ s[1] }}</div>
+                        <div class="college">{{ s[2] }}</div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <a href="/teacher/approve/{{ s[0] }}" class="btn btn-accept">✓ Accept</a>
+                    <a href="/teacher/reject/{{ s[0] }}" class="btn btn-reject">✗ Reject</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">No pending requests</div>
+        {% endif %}
+
+        <!-- Accepted -->
+        <div class="section-title">ACCEPTED STUDENTS</div>
+        {% if accepted %}
+            {% for s in accepted %}
+            <div class="student-card">
+                <div class="student-info">
+                    <div class="avatar">{{ s[1][0] }}</div>
+                    <div>
+                        <div class="name">{{ s[1] }}</div>
+                        <div class="college">{{ s[2] }}</div>
+                    </div>
+                </div>
+                <a href="/teacher/remove/{{ s[0] }}" class="btn btn-remove">Remove</a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">No accepted students yet</div>
+        {% endif %}
+
+        <!-- Rejected -->
+        <div class="section-title">REJECTED</div>
+        {% if rejected %}
+            {% for s in rejected %}
+            <div class="student-card">
+                <div class="student-info">
+                    <div class="avatar">{{ s[1][0] }}</div>
+                    <div>
+                        <div class="name">{{ s[1] }}</div>
+                        <div class="college">{{ s[2] }}</div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <span class="badge-rejected">REJECTED</span>
+                    <a href="/teacher/approve/{{ s[0] }}" class="btn btn-add">+ Add Back</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty">No rejected students</div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

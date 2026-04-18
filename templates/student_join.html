@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Teacher</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #34d399; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; }
+        .join-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 30px; max-width: 400px; margin-bottom: 30px; }
+        .join-box h3 { color: #34d399; margin-bottom: 8px; }
+        .join-box p { color: #666; font-size: 13px; margin-bottom: 20px; }
+        input { width: 100%; padding: 12px 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 18px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; }
+        input:focus { outline: none; border-color: #10b981; }
+        button { width: 100%; padding: 13px; background: #10b981; color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; font-weight: 600; }
+        .msg-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+        .msg-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; }
+        .requests-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 30px; max-width: 400px; }
+        .requests-box h3 { color: #34d399; margin-bottom: 20px; }
+        .req-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2a2a4a; }
+        .req-item:last-child { border-bottom: none; }
+        .req-name { font-size: 14px; font-weight: 600; }
+        .req-college { font-size: 12px; color: #666; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+        .badge-pending { background: rgba(245,158,11,0.2); color: #fbbf24; }
+        .badge-accepted { background: rgba(16,185,129,0.2); color: #34d399; }
+        .badge-rejected { background: rgba(239,68,68,0.2); color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/student/dashboard">← Back</a>
+        <div class="title">Join Teacher</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <div class="join-box">
+            <h3>🔗 Enter Teacher Code</h3>
+            <p>Ask your teacher for their 6-letter code</p>
+            {% if message %}<div class="msg-success">{{ message }}</div>{% endif %}
+            {% if error %}<div class="msg-error">{{ error }}</div>{% endif %}
+            <form method="POST">
+                <input type="text" name="code" placeholder="ABC123" maxlength="6" required>
+                <button type="submit">Send Request</button>
+            </form>
+        </div>
+
+        {% if requests %}
+        <div class="requests-box">
+            <h3>📋 My Requests</h3>
+            {% for req in requests %}
+            <div class="req-item">
+                <div>
+                    <div class="req-name">{{ req[0] }}</div>
+                    <div class="req-college">{{ req[1] }}</div>
+                </div>
+                <div class="badge badge-{{ req[2] }}">{{ req[2].upper() }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

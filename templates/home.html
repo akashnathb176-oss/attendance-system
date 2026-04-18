@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Attendance System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f0f1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        h1 { font-size: 32px; margin-bottom: 10px; text-align: center; }
+        p { color: #888; margin-bottom: 50px; text-align: center; }
+        .cards {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .card {
+            background: #1a1a2e;
+            border: 2px solid #2a2a4a;
+            border-radius: 20px;
+            padding: 50px 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 220px;
+            text-decoration: none;
+            color: white;
+        }
+        .card:hover { transform: translateY(-8px); }
+        .card.teacher:hover { border-color: #6366f1; background: #1e1e3a; }
+        .card.student:hover { border-color: #10b981; background: #1a2e26; }
+        .card .emoji { font-size: 60px; margin-bottom: 20px; }
+        .card h2 { font-size: 22px; margin-bottom: 8px; }
+        .card p { font-size: 13px; color: #666; margin: 0; }
+        .card.teacher h2 { color: #818cf8; }
+        .card.student h2 { color: #34d399; }
+    </style>
+</head>
+<body>
+    <h1>🎓 QR Attendance System</h1>
+    <p>Choose how you want to login</p>
+    <div class="cards">
+        <a href="/teacher/login" class="card teacher">
+            <div class="emoji">👩‍🏫</div>
+            <h2>Teacher</h2>
+            <p>Manage classes and attendance</p>
+        </a>
+        <a href="/student/login" class="card student">
+            <div class="emoji">👨‍🎓</div>
+            <h2>Student</h2>
+            <p>View your QR and attendance</p>
+        </a>
+    </div>
+</body>
+</html>

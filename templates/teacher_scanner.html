@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Scanner</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #818cf8; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; display: flex; justify-content: center; }
+        .box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 20px; padding: 25px; width: 100%; max-width: 480px; }
+        .box h3 { color: #818cf8; margin-bottom: 20px; }
+        select { width: 100%; padding: 12px 15px; margin-bottom: 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 14px; }
+        select:focus { outline: none; border-color: #6366f1; }
+        select option { background: #1a1a2e; }
+        #reader { width: 100%; border-radius: 12px; margin-bottom: 15px; overflow: hidden; }
+        .result { padding: 15px; border-radius: 10px; text-align: center; font-weight: 600; font-size: 15px; display: none; margin-top: 10px; }
+        .success { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
+        .error { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/teacher/dashboard">← Back</a>
+        <div class="title">QR Scanner</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <div class="box">
+            <h3>📷 Scan Student QR</h3>
+            <select id="subject">
+                <option value="">-- Select Subject --</option>
+                {% for s in subjects %}
+                <option value="{{ s[0] }}">{{ s[2] }} — {{ s[3] }}</option>
+                {% endfor %}
+            </select>
+            <div id="reader"></div>
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+    <script>
+        var subject_id = '';
+        var lastScanned = '';
+        var lastTime = 0;
+
+        document.getElementById('subject').addEventListener('change', function() {
+            subject_id = this.value;
+        });
+
+        var html5QrCode = new Html5Qrcode("reader");
+
+        html5QrCode.start(
+            { facingMode: "user" },
+            { fps: 10, qrbox: { width: 250, height: 250 } },
+            function(decodedText) {
+                var now = Date.now();
+                if (decodedText === lastScanned && now - lastTime < 3000) return;
+                lastScanned = decodedText;
+                lastTime = now;
+
+                if (!subject_id) {
+                    showResult('Please select a subject first!', false);
+                    return;
+                }
+
+                fetch('/teacher/mark_attendance', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ qr_data: decodedText, subject_id: subject_id })
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) { showResult(data.message, data.success); });
+            },
+            function(errorMessage) {}
+        );
+
+        function showResult(msg, success) {
+            var resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result ' + (success ? 'success' : 'error');
+            resultDiv.innerText = msg;
+            setTimeout(function() { resultDiv.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+</html>

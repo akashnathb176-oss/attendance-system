@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Records</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #818cf8; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; }
+        .filter-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 16px; padding: 20px; max-width: 500px; margin-bottom: 25px; display: flex; gap: 10px; }
+        select { flex: 1; padding: 10px 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 14px; }
+        select:focus { outline: none; border-color: #6366f1; }
+        select option { background: #1a1a2e; }
+        button { padding: 10px 20px; background: #6366f1; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; background: #1a1a2e; border-radius: 16px; overflow: hidden; border: 1px solid #2a2a4a; }
+        th { background: #6366f1; padding: 14px 16px; text-align: left; font-size: 13px; }
+        td { padding: 13px 16px; border-bottom: 1px solid #2a2a4a; font-size: 14px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: rgba(99,102,241,0.05); }
+        .empty { color: #666; padding: 30px; text-align: center; }
+        .count { color: #666; font-size: 13px; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/teacher/dashboard">← Back</a>
+        <div class="title">Attendance Records</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <form method="GET" action="/teacher/attendance">
+            <div class="filter-box">
+                <select name="subject_id">
+                    <option value="">-- Select Subject --</option>
+                    {% for s in subjects %}
+                    <option value="{{ s[0] }}" {% if selected_subject == s[0]|string %}selected{% endif %}>
+                        {{ s[2] }} — {{ s[3] }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">View</button>
+            </div>
+        </form>
+
+        {% if records %}
+        <div class="count">Showing {{ records|length }} records</div>
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>College</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for r in records %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+                <td>{{ r[3] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% elif selected_subject %}
+        <div class="empty">No attendance records yet for this subject</div>
+        {% else %}
+        <div class="empty">Select a subject to view attendance</div>
+        {% endif %}
+    </div>
+</body>
+</html>

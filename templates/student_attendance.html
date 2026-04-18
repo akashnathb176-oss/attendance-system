@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Attendance</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: white; min-height: 100vh; }
+        .navbar { background: #1a1a2e; border-bottom: 1px solid #2a2a4a; padding: 15px 30px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar a { color: #34d399; text-decoration: none; font-size: 14px; }
+        .navbar .title { font-weight: 700; font-size: 16px; }
+        .main { padding: 30px; }
+        .filter-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 16px; padding: 20px; max-width: 500px; margin-bottom: 25px; display: flex; gap: 10px; }
+        select { flex: 1; padding: 10px 15px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 10px; color: white; font-size: 14px; }
+        select:focus { outline: none; border-color: #10b981; }
+        select option { background: #1a1a2e; }
+        button { padding: 10px 20px; background: #10b981; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
+        .stats { display: flex; gap: 16px; margin-bottom: 25px; flex-wrap: wrap; }
+        .stat { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 14px; padding: 20px; text-align: center; min-width: 140px; }
+        .stat .num { font-size: 32px; font-weight: 800; }
+        .stat .label { font-size: 12px; color: #666; margin-top: 4px; }
+        .good { color: #34d399; }
+        .bad { color: #f87171; }
+        .alert-box { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; padding: 15px 20px; border-radius: 12px; margin-bottom: 20px; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; background: #1a1a2e; border-radius: 16px; overflow: hidden; border: 1px solid #2a2a4a; }
+        th { background: #10b981; padding: 14px 16px; text-align: left; font-size: 13px; }
+        td { padding: 13px 16px; border-bottom: 1px solid #2a2a4a; font-size: 14px; }
+        tr:last-child td { border-bottom: none; }
+        .empty { color: #666; padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/student/dashboard">← Back</a>
+        <div class="title">My Attendance</div>
+        <div></div>
+    </div>
+    <div class="main">
+        <form method="GET" action="/student/attendance">
+            <div class="filter-box">
+                <select name="teacher_id">
+                    <option value="">-- Select Teacher --</option>
+                    {% for t in teachers %}
+                    <option value="{{ t[0] }}" {% if selected_teacher == t[0]|string %}selected{% endif %}>
+                        {{ t[1] }} — {{ t[2] }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit">View</button>
+            </div>
+        </form>
+
+        {% if selected_teacher %}
+        <div class="stats">
+            <div class="stat">
+                <div class="num {{ 'good' if percentage >= 75 else 'bad' }}">{{ percentage }}%</div>
+                <div class="label">Attendance</div>
+            </div>
+            <div class="stat">
+                <div class="num good">{{ present }}</div>
+                <div class="label">Present</div>
+            </div>
+            <div class="stat">
+                <div class="num">{{ total }}</div>
+                <div class="label">Total Classes</div>
+            </div>
+        </div>
+
+        {% if percentage < 75 %}
+        <div class="alert-box">⚠️ Warning! Your attendance is below 75%! Please attend more classes.</div>
+        {% endif %}
+
+        {% if records %}
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+            {% for r in records %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td>{{ r[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="empty">No attendance records yet</div>
+        {% endif %}
+        {% else %}
+        <div class="empty">Select a teacher to view your attendance</div>
+        {% endif %}
+    </div>
+</body>
+</html>
