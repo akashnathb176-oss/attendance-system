@@ -15,8 +15,8 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'greatsky176@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ihkvfykxwcznfhgd'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'greatsky176@gmail.com')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'ggpjwbmcouxtopht')
 mail = Mail(app)
 def generate_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
@@ -25,16 +25,20 @@ def send_otp(email):
     otp = str(random.randint(100000, 999999))
     session['otp'] = otp
     session['otp_email'] = email
-    try:
-        msg = Message('Your OTP - Attendance System',
-                      sender='greatsky176@gmail.com',
-                      recipients=[email])
-        msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
-        mail.send(msg)
-        print("OTP sent to:", email)
-    except Exception as e:
-        print("EMAIL ERROR:", str(e))
-        raise e
+    import threading
+    def send_email():
+        try:
+            with app.app_context():
+                msg = Message('Your OTP - Attendance System',
+                              sender=app.config['greatsky176@gmail.com'],
+                              recipients=[email])
+                msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
+                mail.send(msg)
+                print("OTP sent to:", email)
+        except Exception as e:
+            print("EMAIL ERROR:", str(e))
+    thread = threading.Thread(target=send_email)
+    thread.start()
     return otp
 
 @app.route('/')
