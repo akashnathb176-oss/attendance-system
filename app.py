@@ -28,7 +28,7 @@ def send_otp(email):
     session['otp_email'] = email
     try:
         msg = Message('Your OTP - Attendance System',
-                      sender='ae3703001@smtp-brevo.com',
+                      sender='greatsky176@gmail.com',
                       recipients=[email])
         msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
         mail.send(msg)
