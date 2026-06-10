@@ -11,12 +11,12 @@ app = Flask(__name__)
 app.secret_key = 'qrattendance2026'
 DB = 'attendance.db'
 
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'greatsky176@gmail.com')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'ggpjwbmcouxtopht')
+app.config['MAIL_USERNAME'] = 'ae3703001@smtp-brevo.com'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'xsmtpsib-545071ed23e0076384b6da64e93ef4aea18d2491deecc8ddbb4f17c63fb3dc8b-uaGVgnTX5rzyLBCu')
 mail = Mail(app)
 def generate_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
@@ -30,7 +30,7 @@ def send_otp(email):
         try:
             with app.app_context():
                 msg = Message('Your OTP - Attendance System',
-                              sender=app.config['greatsky176@gmail.com'],
+                              sender='ae3703001@smtp-brevo.com',
                               recipients=[email])
                 msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
                 mail.send(msg)
