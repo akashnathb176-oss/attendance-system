@@ -16,7 +16,7 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = 'ae3703001@smtp-brevo.com'
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'xsmtpsib-545071ed23e0076384b6da64e93ef4aea18d2491deecc8ddbb4f17c63fb3dc8b-uaGVgnTX5rzyLBCu')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 mail = Mail(app)
 
 def generate_code():
@@ -28,8 +28,8 @@ def send_otp(email):
     session['otp_email'] = email
     try:
         msg = Message('Your OTP - Attendance System',
-                      sender='greatsky176@gmail.com',
-                      recipients=[email])
+              sender=app.config['MAIL_USERNAME'],
+              recipients=[email])
         msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
         mail.send(msg)
         print("OTP sent to:", email)
