@@ -18,6 +18,8 @@ app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 mail = Mail(app)
+app.config['MAIL_TIMEOUT'] = 10
+app.config['MAIL_MAX_EMAILS'] = 5
 
 def generate_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
@@ -26,16 +28,25 @@ def send_otp(email):
     otp = str(random.randint(100000, 999999))
     session['otp'] = otp
     session['otp_email'] = email
+
     try:
-        msg = Message('Your OTP - Attendance System',
-              sender=app.config['MAIL_USERNAME'],
-              recipients=[email])
+        msg = Message(
+            'Your OTP - Attendance System',
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[email]
+        )
+
         msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
+
+        print("Trying to send email...")
         mail.send(msg)
+        print("Email sent successfully!")
         print("OTP sent to:", email)
+
     except Exception as e:
         print("EMAIL ERROR:", str(e))
         raise e
+
     return otp
 
 @app.route('/')
