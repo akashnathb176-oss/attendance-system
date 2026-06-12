@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'qrattendance2026'
 DB = 'attendance.db'
 
-app.config['MAIL_SERVER'] = 'smtp-relay.brevo.com'
+app.config['MAIL_SERVER'] = 'smtp-relay.sendinblue.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
