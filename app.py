@@ -32,7 +32,7 @@ def send_otp(email):
     try:
         msg = Message(
             'Your OTP - Attendance System',
-            sender='greatsky176@gmail.com',
+            sender=app.config['MAIL_USERNAME']
             recipients=[email]
         )
 
