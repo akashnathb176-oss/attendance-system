@@ -31,10 +31,10 @@ def send_otp(email):
 
     try:
         msg = Message(
-            'Your OTP - Attendance System',
-            sender='greatsky176@gmail.com'
-            recipients=[email]
-        )
+    'Your OTP - Attendance System',
+    sender=('Online Attendence System', 'greatsky176@gmail.com'),
+    recipients=[email]
+)
 
         msg.body = f'Your OTP is: {otp}\nValid for 10 minutes.'
 
